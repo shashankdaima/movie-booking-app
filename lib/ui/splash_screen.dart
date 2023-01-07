@@ -31,6 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToApproapriateScreen() async {
     await Future.delayed(const Duration(milliseconds: 2000));
-    AutoRouter.of(context).replace(MainRouter());
+    AutoRouter.of(context).replace(AuthRoute());
   }
 }
