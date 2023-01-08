@@ -3,8 +3,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_booking_app/core/router.gr.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'services/supabase/supabase_client.dart';
+
 
 void main() async {
+  await Supabase.initialize(url: SUPABASE_URL, anonKey: ANON_KEY);
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }

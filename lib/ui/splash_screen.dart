@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie_booking_app/core/router.gr.dart';
 
+import '../services/supabase/auth_state.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -12,12 +14,11 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends AuthState<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _navigateToApproapriateScreen();
+    redirect();
   }
 
   @override
@@ -29,8 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void _navigateToApproapriateScreen() async {
-    await Future.delayed(const Duration(milliseconds: 2000));
-    AutoRouter.of(context).replace(AuthRoute());
+  @override
+  void onAuthFailure() {
+    AutoRouter.of(context).replace(const AuthRoute());
+  }
+
+  @override
+  void onAuthSuccess() {
+    AutoRouter.of(context).replace(const MainRouter());
   }
 }
