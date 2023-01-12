@@ -14,7 +14,37 @@ class MainPageHostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
         appBarBuilder: ((context, tabsRouter) => AppBar(
-              title: Text("204, Sector-30, Faridabad"),
+              leading: SizedBox(
+                height: 34,
+                width: 34,
+                child: Image.asset("assets/images/profile_image.png"),
+              ),
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if ((tabsRouter.activeIndex == 0)) ...{
+                    Icon(Icons.location_on_outlined),
+                    Text(
+                      "Faridabad, Delhi-NCR",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                    )
+                  },
+                  if ((tabsRouter.activeIndex == 1))
+                    Text(
+                      "Search For Your Show",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                    )
+                ],
+              ),
+              actions: [
+                if (tabsRouter.activeIndex == 0)
+                  const SizedBox(
+                      height: 34,
+                      width: 34,
+                      child: Icon(Icons.notifications_none_outlined))
+              ],
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
