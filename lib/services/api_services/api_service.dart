@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_booking_app/services/api_services/supabase_api_client.dart';
 import 'package:movie_booking_app/services/api_services/tmdb_api_client.dart';
 
@@ -13,6 +14,8 @@ import '../../utils/api_response.dart';
  *  This is "equilvant" to repository where as API Client is just retrofit instance to handle api responses. 
  *  Techincally we should make interface but that was too much for example apps. 
  */
+final apiServiceProvider = Provider<ApiService>((ref) => ApiService());
+
 class ApiService {
   late final TmdbApiClient tmdbClient;
   late final SupabaseApiClient supabaseApiClient;
@@ -22,7 +25,7 @@ class ApiService {
     tmdbClient = TmdbApiClient(dio);
     supabaseApiClient = SupabaseApiClient(dio);
   }
-  
+
   Future<ApiResponse<List<ThumbnailResponse>>> getThumbnails() async {
     try {
       final res = await supabaseApiClient.getTrendingThumbnails() as List;

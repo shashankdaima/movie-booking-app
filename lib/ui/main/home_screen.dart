@@ -3,129 +3,132 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_booking_app/services/api_services/api_service.dart';
+import 'package:movie_booking_app/ui/main/home_view_model.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_slider_indicator/flutter_slider_indicator.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int carouselIndex = 0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // test();
-  }
-
-  // test() async {
-  //   final apiService = ApiService();
-  //   final response = await apiService.getThumbnails();
-  //   debugPrint(response.status.toString());
-  //   // if (response.status == ApiResponse.success) {
-  //   debugPrint(response.data![0].launch_url.toString());
-  //   // }
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 24,
-          ),
-          CarouselSlider(
-            options: CarouselOptions(
-                height: 200.0,
-                enlargeCenterPage: true,
-                autoPlay: true,
-                enlargeFactor: 0.3,
-                onPageChanged: ((index, reason) =>
-                    setState(() => {carouselIndex = index}))),
-            items: [1, 2, 3, 4, 5].map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Text(
-                        'text $i',
-                        style: TextStyle(fontSize: 16.0),
-                      ));
-                },
+  Widget build(Object context, WidgetRef ref) {
+    // int carouselIndex =
+    //     ref.watch(homeViewModelProvider.select((value) => value.carouselIndex));
+    // final error =
+    //     ref.watch(homeViewModelProvider.select((value) => value.errorMessage));
+    // HomeScreenStatus status =
+    //     ref.watch(homeViewModelProvider.select((value) => value.status));
+    final state = ref.watch(homeViewModelProvider);
+    return (state.status == HomeScreenStatus.loading)
+        ? const Center(
+            child: CircularProgressIndicator.adaptive(),
+          )
+        : (state.status == HomeScreenStatus.error)
+            ? Center(
+                child: Text(state.errorMessage!),
+              )
+            : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    CarouselSlider(
+                      options: CarouselOptions(
+                          height: 200.0,
+                          enlargeCenterPage: true,
+                          autoPlay: true,
+                          enlargeFactor: 0.3,
+                          onPageChanged: ((index, reason) {
+                            ref
+                                .read(homeViewModelProvider.notifier)
+                                .changeCarouselIndex(index);
+                          })),
+                      items: state.thumbnailList.map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(i.thumbnail_url),
+                                    fit: BoxFit.cover,
+  
+                                  ),
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.circular(15)),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 22.0),
+                      child: Center(
+                          child: AnimatedSmoothIndicator(
+                        activeIndex: state.carouselIndex,
+                        count: state.thumbnailList.length,
+                        effect: const ExpandingDotsEffect(
+                            dotHeight: 8,
+                            dotWidth: 14,
+                            activeDotColor: Color(0xFF4D438A),
+                            dotColor: Color(0xFF2A2740)),
+                      )),
+                    ),
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+                      child: Text("Currently Showing",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24)),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          for (int i = 0; i < 10; i++) MovieOverview(),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+                      child: Text("Coupons and Vouchers",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24)),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          for (int i = 0; i < 10; i++) CouponAvailable(),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               );
-            }).toList(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 22.0),
-            child: Center(
-                child: AnimatedSmoothIndicator(
-              activeIndex: carouselIndex,
-              count: 5,
-              effect: const ExpandingDotsEffect(
-                  dotHeight: 8,
-                  dotWidth: 14,
-                  activeDotColor: Color(0xFF4D438A),
-                  dotColor: Color(0xFF2A2740)),
-            )),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-            child: Text("Currently Showing",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 8,
-                ),
-                for (int i = 0; i < 10; i++) MovieOverview(),
-                const SizedBox(
-                  width: 8,
-                ),
-              ],
-            ),
-          ),
-          const Divider(),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-            child: Text("Coupons and Vouchers",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 8,
-                ),
-                for (int i = 0; i < 10; i++) CouponAvailable(),
-                const SizedBox(
-                  width: 8,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
 
