@@ -61,7 +61,7 @@ class MainPageHostScreen extends StatelessWidget {
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.description), label: "Documents"),
+                    icon: Icon(Icons.search), label: "Search"),
               ],
             ));
   }
