@@ -1,14 +1,18 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_booking_app/models/responses/movie.dart';
 import 'package:movie_booking_app/services/api_services/api_service.dart';
 import 'package:movie_booking_app/ui/main/home_view_model.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_slider_indicator/flutter_slider_indicator.dart';
+import 'package:marquee/marquee.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -59,7 +63,6 @@ class HomeScreen extends ConsumerWidget {
                                   image: DecorationImage(
                                     image: NetworkImage(i.thumbnail_url),
                                     fit: BoxFit.cover,
-  
                                   ),
                                   color: Colors.yellow,
                                   borderRadius: BorderRadius.circular(15)),
@@ -96,7 +99,8 @@ class HomeScreen extends ConsumerWidget {
                           const SizedBox(
                             width: 8,
                           ),
-                          for (int i = 0; i < 10; i++) MovieOverview(),
+                          for (int i = 0; i < state.movies.length; i++)
+                            MovieOverview(state.movies[i]),
                           const SizedBox(
                             width: 8,
                           ),
@@ -133,38 +137,46 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class MovieOverview extends StatelessWidget {
-  const MovieOverview({super.key});
-
+  const MovieOverview(this.movie, {super.key});
+  final Movie movie;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  "assets/images/sample_poster.webp",
-                  width: 150,
-                  height: 210,
-                  fit: BoxFit.cover,
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    "https://image.tmdb.org/t/p/w500" +
+                        movie.posterPath.toString(),
+                    height: 210,
+                    width: 150,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Avenger's Endgame",
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text("4.5/5"),
-            ],
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 150,
+                  child: Text(
+                    movie.title.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text("4.5/5")
+              ],
+            ),
           ),
         ),
         Positioned.fill(

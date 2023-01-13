@@ -21,6 +21,7 @@ mixin _$HomeViewModelState {
   List<ThumbnailResponse> get thumbnailList =>
       throw _privateConstructorUsedError;
   int get carouselIndex => throw _privateConstructorUsedError;
+  List<Movie> get movies => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeViewModelStateCopyWith<HomeViewModelState> get copyWith =>
@@ -37,7 +38,8 @@ abstract class $HomeViewModelStateCopyWith<$Res> {
       {HomeScreenStatus status,
       String? errorMessage,
       List<ThumbnailResponse> thumbnailList,
-      int carouselIndex});
+      int carouselIndex,
+      List<Movie> movies});
 }
 
 /// @nodoc
@@ -57,6 +59,7 @@ class _$HomeViewModelStateCopyWithImpl<$Res, $Val extends HomeViewModelState>
     Object? errorMessage = freezed,
     Object? thumbnailList = null,
     Object? carouselIndex = null,
+    Object? movies = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -75,6 +78,10 @@ class _$HomeViewModelStateCopyWithImpl<$Res, $Val extends HomeViewModelState>
           ? _value.carouselIndex
           : carouselIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      movies: null == movies
+          ? _value.movies
+          : movies // ignore: cast_nullable_to_non_nullable
+              as List<Movie>,
     ) as $Val);
   }
 }
@@ -91,7 +98,8 @@ abstract class _$$_HomeViewModelStateCopyWith<$Res>
       {HomeScreenStatus status,
       String? errorMessage,
       List<ThumbnailResponse> thumbnailList,
-      int carouselIndex});
+      int carouselIndex,
+      List<Movie> movies});
 }
 
 /// @nodoc
@@ -109,6 +117,7 @@ class __$$_HomeViewModelStateCopyWithImpl<$Res>
     Object? errorMessage = freezed,
     Object? thumbnailList = null,
     Object? carouselIndex = null,
+    Object? movies = null,
   }) {
     return _then(_$_HomeViewModelState(
       status: null == status
@@ -127,6 +136,10 @@ class __$$_HomeViewModelStateCopyWithImpl<$Res>
           ? _value.carouselIndex
           : carouselIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      movies: null == movies
+          ? _value._movies
+          : movies // ignore: cast_nullable_to_non_nullable
+              as List<Movie>,
     ));
   }
 }
@@ -138,8 +151,10 @@ class _$_HomeViewModelState implements _HomeViewModelState {
       {this.status = HomeScreenStatus.initial,
       this.errorMessage,
       final List<ThumbnailResponse> thumbnailList = const [],
-      this.carouselIndex = 0})
-      : _thumbnailList = thumbnailList;
+      this.carouselIndex = 0,
+      final List<Movie> movies = const []})
+      : _thumbnailList = thumbnailList,
+        _movies = movies;
 
   @override
   @JsonKey()
@@ -158,10 +173,18 @@ class _$_HomeViewModelState implements _HomeViewModelState {
   @override
   @JsonKey()
   final int carouselIndex;
+  final List<Movie> _movies;
+  @override
+  @JsonKey()
+  List<Movie> get movies {
+    if (_movies is EqualUnmodifiableListView) return _movies;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_movies);
+  }
 
   @override
   String toString() {
-    return 'HomeViewModelState(status: $status, errorMessage: $errorMessage, thumbnailList: $thumbnailList, carouselIndex: $carouselIndex)';
+    return 'HomeViewModelState(status: $status, errorMessage: $errorMessage, thumbnailList: $thumbnailList, carouselIndex: $carouselIndex, movies: $movies)';
   }
 
   @override
@@ -175,12 +198,18 @@ class _$_HomeViewModelState implements _HomeViewModelState {
             const DeepCollectionEquality()
                 .equals(other._thumbnailList, _thumbnailList) &&
             (identical(other.carouselIndex, carouselIndex) ||
-                other.carouselIndex == carouselIndex));
+                other.carouselIndex == carouselIndex) &&
+            const DeepCollectionEquality().equals(other._movies, _movies));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, errorMessage,
-      const DeepCollectionEquality().hash(_thumbnailList), carouselIndex);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      errorMessage,
+      const DeepCollectionEquality().hash(_thumbnailList),
+      carouselIndex,
+      const DeepCollectionEquality().hash(_movies));
 
   @JsonKey(ignore: true)
   @override
@@ -195,7 +224,8 @@ abstract class _HomeViewModelState implements HomeViewModelState {
       {final HomeScreenStatus status,
       final String? errorMessage,
       final List<ThumbnailResponse> thumbnailList,
-      final int carouselIndex}) = _$_HomeViewModelState;
+      final int carouselIndex,
+      final List<Movie> movies}) = _$_HomeViewModelState;
 
   @override
   HomeScreenStatus get status;
@@ -205,6 +235,8 @@ abstract class _HomeViewModelState implements HomeViewModelState {
   List<ThumbnailResponse> get thumbnailList;
   @override
   int get carouselIndex;
+  @override
+  List<Movie> get movies;
   @override
   @JsonKey(ignore: true)
   _$$_HomeViewModelStateCopyWith<_$_HomeViewModelState> get copyWith =>

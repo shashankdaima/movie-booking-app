@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_booking_app/models/responses/trending_movies_response.dart';
 import 'package:movie_booking_app/services/api_services/supabase_api_client.dart';
 import 'package:movie_booking_app/services/api_services/tmdb_api_client.dart';
 
+import '../../models/responses/movie.dart';
 import '../../models/responses/thumbnail_response.dart';
 import '../../utils/api_response.dart';
 
@@ -24,6 +27,19 @@ class ApiService {
     dio = Dio(BaseOptions(connectTimeout: 20000));
     tmdbClient = TmdbApiClient(dio);
     supabaseApiClient = SupabaseApiClient(dio);
+  }
+  Future<ApiResponse<TrendingMoviesResponse>> getTrendingMovies() async {
+    try {
+      final res = await tmdbClient.getTrendingMovies();
+      return ApiResponse.success(TrendingMoviesResponse.fromJson(res));
+    } catch (e) {
+      if ((e as DioError).type == DioErrorType.response) {
+        final res = e.response;
+        debugPrint(res!.statusMessage??"");
+        return ApiResponse.error(res!.statusMessage??"");
+      }
+      return ApiResponse.error(await _checkNetworkAndReturnError());
+    }
   }
 
   Future<ApiResponse<List<ThumbnailResponse>>> getThumbnails() async {

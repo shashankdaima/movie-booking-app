@@ -1,9 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
+import 'package:movie_booking_app/utils/api_response.dart';
 
+import '../../models/responses/movie.dart';
 import '../../models/responses/thumbnail_response.dart';
 import '../../services/api_services/api_service.dart';
+import '../../utils/api_response.dart';
 part 'home_view_model.freezed.dart';
 
 final homeViewModelProvider =
@@ -15,11 +19,13 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
   final StateNotifierProviderRef ref;
   HomeViewModel({required this.apiService, required this.ref})
       : super(const HomeViewModelState()) {
-        _loadHomeScreen();
-      }
-  void _loadHomeScreen() async {
+    _loadHomeScreen();
+  }
+  _loadHomeScreen() async {
     final thumbnailResponse = await _loadThumbnails();
-    if (thumbnailResponse) {
+    debugPrint(thumbnailResponse.toString());
+    final moviesResponse = await _loadMovies();
+    if (thumbnailResponse && moviesResponse) {
       state = state.copyWith(carouselIndex: 0, status: HomeScreenStatus.loaded);
     }
   }
@@ -46,6 +52,19 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
     }
   }
 
+  Future<bool> _loadMovies() async {
+    final response = await apiService.getTrendingMovies();
+    // debugPrint(.toString());
+    if (response.status != ApiStatus.success) {
+      state = state.copyWith(
+          status: HomeScreenStatus.error, errorMessage: response.errorMessage);
+      return false;
+    } else {
+      state = state.copyWith(movies: response.data!.results!);
+      return true;
+    }
+  }
+
   void changeCarouselIndex(int i) {
     state = state.copyWith(carouselIndex: i);
   }
@@ -58,6 +77,7 @@ class HomeViewModelState with _$HomeViewModelState {
     String? errorMessage,
     @Default([]) List<ThumbnailResponse> thumbnailList,
     @Default(0) int carouselIndex,
+    @Default([]) List<Movie> movies,
   }) = _HomeViewModelState;
 }
 
