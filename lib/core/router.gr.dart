@@ -47,8 +47,8 @@ class AppRouter extends _i3.RootStackRouter {
       return _i3.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i1.DetailsScreen(
-          movie: args.movie,
           key: args.key,
+          movie: args.movie,
         ),
       );
     },
@@ -140,14 +140,14 @@ class MainRouter extends _i3.PageRouteInfo<void> {
 /// [_i1.DetailsScreen]
 class DetailsRoute extends _i3.PageRouteInfo<DetailsRouteArgs> {
   DetailsRoute({
-    required _i5.Movie movie,
     _i4.Key? key,
+    required _i5.Movie movie,
   }) : super(
           DetailsRoute.name,
           path: '/details',
           args: DetailsRouteArgs(
-            movie: movie,
             key: key,
+            movie: movie,
           ),
         );
 
@@ -156,17 +156,17 @@ class DetailsRoute extends _i3.PageRouteInfo<DetailsRouteArgs> {
 
 class DetailsRouteArgs {
   const DetailsRouteArgs({
-    required this.movie,
     this.key,
+    required this.movie,
   });
-
-  final _i5.Movie movie;
 
   final _i4.Key? key;
 
+  final _i5.Movie movie;
+
   @override
   String toString() {
-    return 'DetailsRouteArgs{movie: $movie, key: $key}';
+    return 'DetailsRouteArgs{key: $key, movie: $movie}';
   }
 }
 

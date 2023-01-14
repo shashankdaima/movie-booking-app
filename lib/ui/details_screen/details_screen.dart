@@ -39,6 +39,9 @@ class DetailsScreen extends ConsumerWidget {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24)),
+                               const SizedBox(
+                                height: 15,
+                              ),
                               for (int i = 0; i < 4; i++)
                                 Table(
                                   columnWidths: const <int, TableColumnWidth>{
@@ -171,8 +174,8 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget buildAppBar(double shrinkOffset) => Opacity(
         opacity: appear(shrinkOffset),
         child: AppBar(
-          title: Text("TITLE"),
           centerTitle: true,
+          backgroundColor: Color(0xFF2F2C44),
         ),
       );
 
