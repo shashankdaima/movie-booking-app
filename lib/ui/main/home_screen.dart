@@ -1,11 +1,13 @@
 import 'dart:ffi';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_booking_app/core/router.gr.dart';
 import 'package:movie_booking_app/models/responses/movie.dart';
 import 'package:movie_booking_app/services/api_services/api_service.dart';
 import 'package:movie_booking_app/ui/main/home_view_model.dart';
@@ -186,7 +188,9 @@ class MovieOverview extends StatelessWidget {
                 color: Colors.transparent,
                 child: new InkWell(
                   highlightColor: Color.fromARGB(105, 0, 0, 0),
-                  onTap: () => debugPrint("HWLLOR"),
+                  onTap: () => {
+                    AutoRouter.of(context).push(DetailsRoute(movie:movie))
+                  },
                 ))),
       ],
     );

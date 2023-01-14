@@ -37,6 +37,8 @@ import '../ui/export_ui.dart';
         page: SearchScreen
       ),
     ]
-  )
+  ),
+  AutoRoute(path: '/details', page: DetailsScreen),
+
 ])
 class $AppRouter {}

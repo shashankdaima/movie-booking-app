@@ -14,6 +14,7 @@
 import 'package:auto_route/auto_route.dart' as _i3;
 import 'package:flutter/material.dart' as _i4;
 
+import '../models/responses/movie.dart' as _i5;
 import '../ui/export_ui.dart' as _i1;
 import '../ui/main/main_page_host_screen.dart' as _i2;
 
@@ -39,6 +40,16 @@ class AppRouter extends _i3.RootStackRouter {
       return _i3.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.MainPageHostScreen(),
+      );
+    },
+    DetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsRouteArgs>();
+      return _i3.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i1.DetailsScreen(
+          movie: args.movie,
+          key: args.key,
+        ),
       );
     },
     HomeRoute.name: (routeData) {
@@ -81,6 +92,10 @@ class AppRouter extends _i3.RootStackRouter {
             ),
           ],
         ),
+        _i3.RouteConfig(
+          DetailsRoute.name,
+          path: '/details',
+        ),
       ];
 }
 
@@ -119,6 +134,40 @@ class MainRouter extends _i3.PageRouteInfo<void> {
         );
 
   static const String name = 'MainRouter';
+}
+
+/// generated route for
+/// [_i1.DetailsScreen]
+class DetailsRoute extends _i3.PageRouteInfo<DetailsRouteArgs> {
+  DetailsRoute({
+    required _i5.Movie movie,
+    _i4.Key? key,
+  }) : super(
+          DetailsRoute.name,
+          path: '/details',
+          args: DetailsRouteArgs(
+            movie: movie,
+            key: key,
+          ),
+        );
+
+  static const String name = 'DetailsRoute';
+}
+
+class DetailsRouteArgs {
+  const DetailsRouteArgs({
+    required this.movie,
+    this.key,
+  });
+
+  final _i5.Movie movie;
+
+  final _i4.Key? key;
+
+  @override
+  String toString() {
+    return 'DetailsRouteArgs{movie: $movie, key: $key}';
+  }
 }
 
 /// generated route for
