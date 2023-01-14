@@ -31,7 +31,6 @@ class DetailsViewModelState with _$DetailsViewModelState {
   const factory DetailsViewModelState({
     @Default(DetailsScreenStatus.initial) DetailsScreenStatus status,
     String? errorMessage,
-    MovieDetails? detailsModel
   }) = _DetailsViewModelState;
 }
 

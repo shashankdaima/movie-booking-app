@@ -14,7 +14,6 @@ import 'package:movie_booking_app/ui/main/home_view_model.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_slider_indicator/flutter_slider_indicator.dart';
-import 'package:marquee/marquee.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

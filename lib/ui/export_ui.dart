@@ -2,7 +2,7 @@ export 'auth_screen.dart';
 export 'details_screen/details_screen.dart';
 export 'details_screen/details_screen.dart';
 export 'movie_selection_screen.dart';
-export 'seat_selection_screen.dart';
+export 'seat_selection_screen/seat_selection_screen.dart';
 export 'splash_screen.dart';
 export 'theater_selection_screen.dart';
 export 'main/home_screen.dart';

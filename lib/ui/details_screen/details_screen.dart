@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_booking_app/core/router.gr.dart';
 import 'package:movie_booking_app/models/responses/movie.dart';
 import 'package:movie_booking_app/ui/widgets/gradiant_button.dart';
 
@@ -119,7 +121,9 @@ class DetailsScreen extends ConsumerWidget {
                           
                             width: MediaQuery.of(context).size.width - 32,
                             borderRadius: BorderRadius.circular(12),
-                            onPressed: () {},
+                            onPressed: () {
+                              AutoRouter.of(context).push(SeatSelectionRoute());
+                            },
                             child: Text(
                               "Book Table",
                               style: GoogleFonts.openSans(
