@@ -9,10 +9,12 @@ import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 import 'package:movie_booking_app/ui/seat_selection_screen/seat_selection_view_model.dart';
 
+import '../../models/responses/movie.dart';
 import '../widgets/gradiant_button.dart';
 
 class SeatSelectionScreen extends ConsumerStatefulWidget {
-  const SeatSelectionScreen({super.key});
+  const SeatSelectionScreen({required this.movie, super.key});
+  final Movie movie;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _SeatSelectionScreenState();
@@ -21,8 +23,16 @@ class SeatSelectionScreen extends ConsumerStatefulWidget {
 class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
   DatePickerController _datePickerController = DatePickerController();
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ref
+        .read(seatSelectionViewModelProvider.notifier)
+        .loadSeatSelectionScreen(widget.movie.id.toString());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // ref.read(seatSelectionViewModelProvider.notifier).setDate(DateTime.now());
     final state = ref
         .watch(seatSelectionViewModelProvider.select((value) => value.status));
     final seatingArrangement = ref.watch(seatSelectionViewModelProvider

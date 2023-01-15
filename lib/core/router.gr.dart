@@ -53,9 +53,13 @@ class AppRouter extends _i3.RootStackRouter {
       );
     },
     SeatSelectionRoute.name: (routeData) {
+      final args = routeData.argsAs<SeatSelectionRouteArgs>();
       return _i3.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i1.SeatSelectionScreen(),
+        child: _i1.SeatSelectionScreen(
+          movie: args.movie,
+          key: args.key,
+        ),
       );
     },
     HomeRoute.name: (routeData) {
@@ -182,14 +186,36 @@ class DetailsRouteArgs {
 
 /// generated route for
 /// [_i1.SeatSelectionScreen]
-class SeatSelectionRoute extends _i3.PageRouteInfo<void> {
-  const SeatSelectionRoute()
-      : super(
+class SeatSelectionRoute extends _i3.PageRouteInfo<SeatSelectionRouteArgs> {
+  SeatSelectionRoute({
+    required _i5.Movie movie,
+    _i4.Key? key,
+  }) : super(
           SeatSelectionRoute.name,
           path: '/seat-selection',
+          args: SeatSelectionRouteArgs(
+            movie: movie,
+            key: key,
+          ),
         );
 
   static const String name = 'SeatSelectionRoute';
+}
+
+class SeatSelectionRouteArgs {
+  const SeatSelectionRouteArgs({
+    required this.movie,
+    this.key,
+  });
+
+  final _i5.Movie movie;
+
+  final _i4.Key? key;
+
+  @override
+  String toString() {
+    return 'SeatSelectionRouteArgs{movie: $movie, key: $key}';
+  }
 }
 
 /// generated route for

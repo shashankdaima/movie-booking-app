@@ -26,10 +26,10 @@ class SeatSelectionViewModel
   late StreamSubscription rtEventSubscription;
   SeatSelectionViewModel({required this.apiService, required this.ref})
       : super(const SeatSelectionViewModelState()) {
-    _loadSeatSelectionScreen("299534");
+    // _loadSeatSelectionScreen("299534");
     setDate(DateTime.now());
   }
-  _loadSeatSelectionScreen(String id) async {
+  loadSeatSelectionScreen(String id) async {
     rtEventSubscription = SupabaseClient.supabaseInstance
         .from("schedule")
         .stream(primaryKey: ['pid'])

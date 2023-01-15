@@ -41,7 +41,7 @@ class DetailsScreen extends ConsumerWidget {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24)),
-                               const SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               for (int i = 0; i < 4; i++)
@@ -118,18 +118,20 @@ class DetailsScreen extends ConsumerWidget {
                               "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."),
                         ),
                         GradiantButton(
-                          
                             width: MediaQuery.of(context).size.width - 32,
                             borderRadius: BorderRadius.circular(12),
                             onPressed: () {
-                              AutoRouter.of(context).push(SeatSelectionRoute());
+                              AutoRouter.of(context)
+                                  .push(SeatSelectionRoute(movie: movie));
                             },
                             child: Text(
                               "Book Table",
                               style: GoogleFonts.openSans(
                                   fontSize: 18, fontWeight: FontWeight.w600),
                             )),
-                        SizedBox(height: 15,)
+                        SizedBox(
+                          height: 15,
+                        )
                       ],
                     );
                   }
