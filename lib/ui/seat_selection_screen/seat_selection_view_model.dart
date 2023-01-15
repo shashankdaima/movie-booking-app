@@ -73,7 +73,7 @@ class SeatSelectionViewModel
         currentList.add("s$index");
       state = state.copyWith(selectedSeats: currentList);
     }
-  }v
+  }
 
   void setDate(DateTime obj) {
     //
