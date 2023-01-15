@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
+import 'package:movie_booking_app/ui/seat_selection_screen/seat_selection_view_model.dart';
 
 import '../widgets/gradiant_button.dart';
 
@@ -19,12 +20,22 @@ class SeatSelectionScreen extends ConsumerStatefulWidget {
 
 class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
   DatePickerController _datePickerController = DatePickerController();
-
   @override
   Widget build(BuildContext context) {
+    // ref.read(seatSelectionViewModelProvider.notifier).setDate(DateTime.now());
+    final state = ref
+        .watch(seatSelectionViewModelProvider.select((value) => value.status));
+    final seatingArrangement = ref.watch(seatSelectionViewModelProvider
+        .select((value) => value.seatingArrangement));
+    // final requiredSeatingArrangement=(allSeatingArrangements as List).where((element) => false)
+    final selectedSeats = ref.watch(
+        seatSelectionViewModelProvider.select((value) => value.selectedSeats));
+    final currentDate = ref.watch(
+        seatSelectionViewModelProvider.select((value) => value.currentDate));
     var now = DateTime.now();
-    DateTime startDate = now.subtract(Duration(days: 14));
+    DateTime startDate = now.subtract(Duration(days: 0));
     DateTime endDate = now.add(Duration(days: 7));
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -50,7 +61,9 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
               disabledColor: const Color(0xFF1C1A29),
               disabledTextColor: Colors.white30,
               onValueSelected: (date) {
-                print('selected = ${date.toIso8601String()}');
+                // print('selected = ${date.toIso8601String()}');
+                ref.read(seatSelectionViewModelProvider.notifier).setDate(date);
+                // debugPrint((seatingArrangement as List).where((element) => element["created_on"].toString().contains(ref.watch(provider))))
               },
             ),
             const SizedBox(
@@ -61,15 +74,53 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
               child: GridView.custom(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 10),
                 childrenDelegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return Container(
-                      color: Color(0xFF514F64),
-                      margin: const EdgeInsets.all(5),
-                      alignment: Alignment.center,
-                      child: Text('$index'),
+                    return GestureDetector(
+                      onTap: () {
+                        if (seatingArrangement == null) return;
+                        ref
+                            .read(seatSelectionViewModelProvider.notifier)
+                            .bookSeat(index + 1);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: () {
+                            int? i = null;
+                            int rangeOfSchedules = (seatingArrangement == null)
+                                ? 0
+                                : (seatingArrangement as List).length;
+                            for (int j = 0; j < rangeOfSchedules; j++) {
+                              if (compareDate(
+                                  seatingArrangement[j]["created_on"]
+                                      .toString(),
+                                  currentDate.toString())) {
+                                i = j;
+                                break;
+                              }
+                            }
+                            return seatingArrangement == null ||
+                                    i == null ||
+                                    seatingArrangement[i]["s${index + 1}"]
+                                            .toString() ==
+                                        "null"
+                                ? const Color(0xFF514F64)
+                                : const Color(0xFF195777);
+                          }(),
+                          border: (selectedSeats.contains("s${index + 1}"))
+                              ? Border.all(
+                                  color: Colors
+                                      .white, //                   <--- border color
+                                  width: 2.0,
+                                )
+                              : Border.all(),
+                        ),
+                        margin: const EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        child: Text('s${index + 1}'),
+                      ),
                     );
                   },
                   childCount: 150,
@@ -90,7 +141,7 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                       color: const Color(0xFF514F64),
                     ),
                   ),
-                  const Text("Available"),
+                  Text(currentDate.toString()),
                   Expanded(
                     child: Container(),
                   ),
@@ -134,14 +185,17 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                       child: Row(
                         children: [
                           Expanded(child: Text("Number of Seats")),
-                          Text("2")
+                          Text(selectedSeats.length.toString())
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
-                        children: [Expanded(child: Text("Seats")), Text("2,3")],
+                        children: [
+                          Expanded(child: Text("Seats")),
+                          Text(selectedSeats.toString())
+                        ],
                       ),
                     ),
                     Padding(
@@ -149,7 +203,7 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                       child: Row(
                         children: [
                           Expanded(child: Text("Price(10Rs/per seat)")),
-                          Text("20 Rs/-")
+                          Text("${selectedSeats.length * 10}Rs/-")
                         ],
                       ),
                     ),
@@ -160,9 +214,12 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                           borderRadius: BorderRadius.circular(12),
                           onPressed: () {
                             // AutoRouter.of(context).push(SeatSelectionRoute());
+                            // ref
+                            //     .read(seatSelectionViewModelProvider.notifier)
+                            //     .makePayment(_datePickerController.selectedDate);
                           },
                           child: Text(
-                            "Book Table",
+                            "Book Tickets",
                             style: GoogleFonts.openSans(
                                 fontSize: 18, fontWeight: FontWeight.w600),
                           )),
@@ -178,6 +235,17 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
         ),
       ),
     );
+  }
+
+  bool compareDate(String a, String b) {
+    int aYear = int.parse(a.substring(0, 4));
+    int aMonth = int.parse(a.substring(5, 7));
+    int aDate = int.parse(a.substring(8, 10));
+    int bYear = int.parse(b.substring(0, 4));
+    int bMonth = int.parse(b.substring(5, 7));
+    int bDate = int.parse(b.substring(8, 10));
+
+    return aYear == bYear && aMonth == bMonth && aDate == bDate;
   }
 }
 
