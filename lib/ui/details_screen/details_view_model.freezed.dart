@@ -20,6 +20,7 @@ mixin _$DetailsViewModelState {
   String? get errorMessage => throw _privateConstructorUsedError;
   Movie? get movie => throw _privateConstructorUsedError;
   MovieDetails? get details => throw _privateConstructorUsedError;
+  bool get movieSlotsAvailable => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DetailsViewModelStateCopyWith<DetailsViewModelState> get copyWith =>
@@ -36,7 +37,8 @@ abstract class $DetailsViewModelStateCopyWith<$Res> {
       {DetailsScreenStatus status,
       String? errorMessage,
       Movie? movie,
-      MovieDetails? details});
+      MovieDetails? details,
+      bool movieSlotsAvailable});
 }
 
 /// @nodoc
@@ -57,6 +59,7 @@ class _$DetailsViewModelStateCopyWithImpl<$Res,
     Object? errorMessage = freezed,
     Object? movie = freezed,
     Object? details = freezed,
+    Object? movieSlotsAvailable = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -75,6 +78,10 @@ class _$DetailsViewModelStateCopyWithImpl<$Res,
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as MovieDetails?,
+      movieSlotsAvailable: null == movieSlotsAvailable
+          ? _value.movieSlotsAvailable
+          : movieSlotsAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -91,7 +98,8 @@ abstract class _$$_DetailsViewModelStateCopyWith<$Res>
       {DetailsScreenStatus status,
       String? errorMessage,
       Movie? movie,
-      MovieDetails? details});
+      MovieDetails? details,
+      bool movieSlotsAvailable});
 }
 
 /// @nodoc
@@ -109,6 +117,7 @@ class __$$_DetailsViewModelStateCopyWithImpl<$Res>
     Object? errorMessage = freezed,
     Object? movie = freezed,
     Object? details = freezed,
+    Object? movieSlotsAvailable = null,
   }) {
     return _then(_$_DetailsViewModelState(
       status: null == status
@@ -127,6 +136,10 @@ class __$$_DetailsViewModelStateCopyWithImpl<$Res>
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as MovieDetails?,
+      movieSlotsAvailable: null == movieSlotsAvailable
+          ? _value.movieSlotsAvailable
+          : movieSlotsAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -138,7 +151,8 @@ class _$_DetailsViewModelState implements _DetailsViewModelState {
       {this.status = DetailsScreenStatus.initial,
       this.errorMessage,
       this.movie,
-      this.details});
+      this.details,
+      this.movieSlotsAvailable = false});
 
   @override
   @JsonKey()
@@ -149,10 +163,13 @@ class _$_DetailsViewModelState implements _DetailsViewModelState {
   final Movie? movie;
   @override
   final MovieDetails? details;
+  @override
+  @JsonKey()
+  final bool movieSlotsAvailable;
 
   @override
   String toString() {
-    return 'DetailsViewModelState(status: $status, errorMessage: $errorMessage, movie: $movie, details: $details)';
+    return 'DetailsViewModelState(status: $status, errorMessage: $errorMessage, movie: $movie, details: $details, movieSlotsAvailable: $movieSlotsAvailable)';
   }
 
   @override
@@ -164,12 +181,14 @@ class _$_DetailsViewModelState implements _DetailsViewModelState {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.movie, movie) || other.movie == movie) &&
-            (identical(other.details, details) || other.details == details));
+            (identical(other.details, details) || other.details == details) &&
+            (identical(other.movieSlotsAvailable, movieSlotsAvailable) ||
+                other.movieSlotsAvailable == movieSlotsAvailable));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, status, errorMessage, movie, details);
+  int get hashCode => Object.hash(
+      runtimeType, status, errorMessage, movie, details, movieSlotsAvailable);
 
   @JsonKey(ignore: true)
   @override
@@ -184,7 +203,8 @@ abstract class _DetailsViewModelState implements DetailsViewModelState {
       {final DetailsScreenStatus status,
       final String? errorMessage,
       final Movie? movie,
-      final MovieDetails? details}) = _$_DetailsViewModelState;
+      final MovieDetails? details,
+      final bool movieSlotsAvailable}) = _$_DetailsViewModelState;
 
   @override
   DetailsScreenStatus get status;
@@ -194,6 +214,8 @@ abstract class _DetailsViewModelState implements DetailsViewModelState {
   Movie? get movie;
   @override
   MovieDetails? get details;
+  @override
+  bool get movieSlotsAvailable;
   @override
   @JsonKey(ignore: true)
   _$$_DetailsViewModelStateCopyWith<_$_DetailsViewModelState> get copyWith =>
