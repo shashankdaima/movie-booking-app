@@ -55,7 +55,7 @@ class _TmdbApiClient implements TmdbApiClient {
     )
         .compose(
           _dio.options,
-          '/movie/{movieId}?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US',
+          '/movie/${id}?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US',
           queryParameters: queryParameters,
           data: _data,
         )

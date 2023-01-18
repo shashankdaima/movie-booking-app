@@ -101,4 +101,7 @@ class ApiService {
     }
     return null;
   }
+
+  static String? getImageUrl(String? suffix) =>
+      (suffix != null) ? "https://image.tmdb.org/t/p/w500$suffix" : null;
 }

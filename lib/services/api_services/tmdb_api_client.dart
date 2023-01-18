@@ -14,5 +14,5 @@ abstract class TmdbApiClient {
 
   @GET(
       "/movie/{movieId}?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US")
-  Future getMovieById(@Path("id") String id);
+  Future getMovieById(@Path("movieId") String id);
 }
