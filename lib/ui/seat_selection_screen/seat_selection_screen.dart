@@ -49,7 +49,7 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Avenger:Infinity Wars",
+          widget.movie.title.toString(),
         ),
         backgroundColor: const Color(0xFF2F2C44),
       ),

@@ -38,6 +38,8 @@ class _DetailsState extends ConsumerState<DetailsScreen> {
         ref.watch(detailsViewModelProvider.select((value) => value.status));
     final details =
         ref.watch(detailsViewModelProvider.select((value) => value.details));
+    final isMovieAvailable = ref.watch(
+        detailsViewModelProvider.select((value) => value.movieSlotsAvailable));
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -173,7 +175,7 @@ class _DetailsState extends ConsumerState<DetailsScreen> {
                                         children: [
                                           RatingBar.builder(
                                             initialRating:
-                                                details!.voteAverage! / 2,
+                                                details!.voteAverage ?? 5 / 2,
                                             itemSize: 12,
                                             minRating: 1,
                                             direction: Axis.horizontal,
@@ -259,25 +261,15 @@ class _DetailsState extends ConsumerState<DetailsScreen> {
                             Text("Summary",
                                 style: GoogleFonts.openSans(
                                     fontWeight: FontWeight.w500, fontSize: 20)),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                  style: TextStyle(color: Colors.white54),
-                                  details?.overview ?? ""),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                  style: TextStyle(color: Colors.white54),
-                                  details?.overview ?? ""),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                  style: TextStyle(color: Colors.white54),
-                                  details?.overview ?? ""),
-                            ),
+                            for (int i = 0; i < 10; i++)
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                    style: TextStyle(color: Colors.white54),
+                                    details?.overview ?? ""),
+                              ),
                             GradiantButton(
+                                isEnabled: isMovieAvailable,
                                 width: MediaQuery.of(context).size.width - 32,
                                 borderRadius: BorderRadius.circular(12),
                                 onPressed: () {
@@ -285,7 +277,9 @@ class _DetailsState extends ConsumerState<DetailsScreen> {
                                       SeatSelectionRoute(movie: widget.movie));
                                 },
                                 child: Text(
-                                  "Book Ticket",
+                                  isMovieAvailable
+                                      ? "Book Ticket"
+                                      : "Unavailable",
                                   style: GoogleFonts.openSans(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600),
@@ -326,7 +320,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       clipBehavior: Clip.none,
       children: [
         buildBackground(shrinkOffset),
-        buildAppBar(shrinkOffset),
+        buildAppBar(context, shrinkOffset),
         Positioned(
           top: top,
           left: 20,
@@ -341,12 +335,10 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   double disappear(double shrinkOffset) => 1 - shrinkOffset / expandedHeight;
 
-  Widget buildAppBar(double shrinkOffset) => Opacity(
-        opacity: appear(shrinkOffset),
-        child: AppBar(
-          centerTitle: true,
-          backgroundColor: Color(0xFF2F2C44),
-        ),
+  Widget buildAppBar(BuildContext context, double shrinkOffset) => AppBar(
+       
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
       );
 
   Widget buildBackground(double shrinkOffset) => Opacity(
@@ -358,12 +350,6 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
               )
             : Container(),
       );
-// // Image.asset(
-//                 "assets/images/sample_poster.webp",
-//                 width: 150,
-//                 height: 210,
-//                 fit: BoxFit.cover,
-//               )
   Widget buildFloating(double shrinkOffset) => Opacity(
         opacity: disappear(shrinkOffset),
         child: Row(

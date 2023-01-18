@@ -11,8 +11,8 @@ import '../../services/api_services/api_service.dart';
 import '../../utils/api_response.dart';
 part 'details_view_model.freezed.dart';
 
-final detailsViewModelProvider =
-    StateNotifierProvider.autoDispose<DetailsViewModel, DetailsViewModelState>(((ref) =>
+final detailsViewModelProvider = StateNotifierProvider
+    .autoDispose<DetailsViewModel, DetailsViewModelState>(((ref) =>
         DetailsViewModel(ref: ref, apiService: ref.read(apiServiceProvider))));
 // StateNotifierProvider<DetailsViewModel, DetailsViewModelState> getViewModel(
 //     Movie movie) {
@@ -25,9 +25,7 @@ class DetailsViewModel extends StateNotifier<DetailsViewModelState> {
   final ApiService apiService;
   final StateNotifierProviderRef ref;
   DetailsViewModel({required this.apiService, required this.ref})
-      : super(const DetailsViewModelState()) {
-    // _loadDetailsScreen();
-  }
+      : super(const DetailsViewModelState()) {}
   loadDetailsScreen(Movie movie) async {
     state = state.copyWith(status: DetailsScreenStatus.loading, movie: movie);
 
@@ -51,6 +49,26 @@ class DetailsViewModel extends StateNotifier<DetailsViewModelState> {
       debugPrint(response.data.toString());
       state = state.copyWith(
           status: DetailsScreenStatus.loaded, details: response.data);
+      checkForAvailablity(movie);
+    }
+  }
+
+  void checkForAvailablity(Movie movie) async {
+    final response =
+        await apiService.checkWhetherShowHasMovieSlots(movie.id.toString());
+    if (response.status != ApiStatus.success) {
+      if (response.status == ApiStatus.authError) {
+        state = state.copyWith(
+          status: DetailsScreenStatus.error,
+          errorMessage: "User Not Authenticated",
+        );
+      }
+      state = state.copyWith(
+        status: DetailsScreenStatus.error,
+        errorMessage: response.errorMessage,
+      );
+    } else {
+      state = state.copyWith(movieSlotsAvailable: response.data!);
     }
   }
 }
@@ -61,7 +79,8 @@ class DetailsViewModelState with _$DetailsViewModelState {
       {@Default(DetailsScreenStatus.initial) DetailsScreenStatus status,
       String? errorMessage,
       Movie? movie,
-      MovieDetails? details}) = _DetailsViewModelState;
+      MovieDetails? details,
+      @Default(false) bool movieSlotsAvailable}) = _DetailsViewModelState;
 }
 
 enum DetailsScreenStatus { initial, loading, error, loaded }

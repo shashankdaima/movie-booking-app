@@ -102,6 +102,20 @@ class ApiService {
     return null;
   }
 
+  Future<ApiResponse<bool>> checkWhetherShowHasMovieSlots(String id) async {
+    try {
+      final res = await supabaseApiClient.getCurrentShowsCount(id:"eq.$id");
+      return ApiResponse.success((res as List).isNotEmpty);
+    } catch (e) {
+      if ((e as DioError).type == DioErrorType.response) {
+        final res = e.response;
+        debugPrint(res!.statusMessage ?? "");
+        return ApiResponse.error(res.statusMessage ?? "");
+      }
+      return ApiResponse.error(await _checkNetworkAndReturnError());
+    }
+  }
+
   static String? getImageUrl(String? suffix) =>
       (suffix != null) ? "https://image.tmdb.org/t/p/w500$suffix" : null;
 }

@@ -7,18 +7,19 @@ class GradiantButton extends StatelessWidget {
   final Gradient gradient;
   final VoidCallback? onPressed;
   final Widget child;
-
+  final bool isEnabled;
   const GradiantButton({
     Key? key,
     required this.onPressed,
     required this.child,
+    this.isEnabled = true,
     this.borderRadius,
     this.width,
     this.height = 44.0,
     this.gradient = const LinearGradient(
       colors: [Color(0xFF6C61AF), Color(0xFF867AD2)],
       begin: Alignment.topCenter,
-      end : Alignment.bottomCenter,
+      end: Alignment.bottomCenter,
     ),
   }) : super(key: key);
 
@@ -29,13 +30,14 @@ class GradiantButton extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        gradient: gradient,
+        gradient: (isEnabled) ? gradient : null,
         borderRadius: borderRadius,
       ),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: (isEnabled) ? onPressed : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
+          backgroundColor:
+              (!isEnabled) ? (Colors.grey[400]) : Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
         ),
