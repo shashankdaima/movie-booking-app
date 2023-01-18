@@ -62,6 +62,12 @@ class AppRouter extends _i3.RootStackRouter {
         ),
       );
     },
+    FinalTicketRoute.name: (routeData) {
+      return _i3.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i1.FinalTicketScreen(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return _i3.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -109,6 +115,10 @@ class AppRouter extends _i3.RootStackRouter {
         _i3.RouteConfig(
           SeatSelectionRoute.name,
           path: '/seat-selection',
+        ),
+        _i3.RouteConfig(
+          FinalTicketRoute.name,
+          path: '/final-ticket-screen',
         ),
       ];
 }
@@ -216,6 +226,18 @@ class SeatSelectionRouteArgs {
   String toString() {
     return 'SeatSelectionRouteArgs{movie: $movie, key: $key}';
   }
+}
+
+/// generated route for
+/// [_i1.FinalTicketScreen]
+class FinalTicketRoute extends _i3.PageRouteInfo<void> {
+  const FinalTicketRoute()
+      : super(
+          FinalTicketRoute.name,
+          path: '/final-ticket-screen',
+        );
+
+  static const String name = 'FinalTicketRoute';
 }
 
 /// generated route for

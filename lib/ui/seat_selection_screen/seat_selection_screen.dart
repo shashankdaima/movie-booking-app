@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
+import 'package:movie_booking_app/core/router.gr.dart';
 import 'package:movie_booking_app/ui/seat_selection_screen/seat_selection_view_model.dart';
 
 import '../../models/responses/movie.dart';
@@ -223,7 +225,8 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                           width: MediaQuery.of(context).size.width - 32,
                           borderRadius: BorderRadius.circular(12),
                           onPressed: () {
-                            // AutoRouter.of(context).push(SeatSelectionRoute());
+                            AutoRouter.of(context)
+                                .push(const FinalTicketRoute());
                             // ref
                             //     .read(seatSelectionViewModelProvider.notifier)
                             //     .makePayment(_datePickerController.selectedDate);
