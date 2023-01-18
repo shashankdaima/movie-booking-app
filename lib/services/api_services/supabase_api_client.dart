@@ -22,4 +22,5 @@ abstract class SupabaseApiClient{
       @Header("Authorization")  String bearer =SupabaseApiClient.bearerToken,
     }
   );
+  
 }

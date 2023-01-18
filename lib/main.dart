@@ -11,6 +11,7 @@ import 'services/supabase/supabase_client.dart';
 void main() async {
   await Supabase.initialize(url: SUPABASE_URL, anonKey: ANON_KEY);
   WidgetsFlutterBinding.ensureInitialized();
+  // SupabaseRealtimeService.init();
   runApp(ProviderScope(child: MyApp()));
 }
 

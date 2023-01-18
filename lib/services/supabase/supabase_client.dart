@@ -21,6 +21,11 @@ class SupabaseClient {
   }
 
   static Session? authSession() => supabaseInstance.auth.currentSession;
-  
-}
 
+  static bookTicket(int showId, String createdDate) async {
+    await supabaseInstance
+        .from("schedule")
+        .update({"s1": authSession()?.user.id}).match(
+            {"id": showId, "created_on": createdDate});
+  }
+}

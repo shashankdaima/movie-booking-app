@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_booking_app/models/responses/movie_details.dart';
 import 'package:movie_booking_app/models/responses/trending_movies_response.dart';
 import 'package:movie_booking_app/services/api_services/supabase_api_client.dart';
 import 'package:movie_booking_app/services/api_services/tmdb_api_client.dart';
@@ -35,8 +36,8 @@ class ApiService {
     } catch (e) {
       if ((e as DioError).type == DioErrorType.response) {
         final res = e.response;
-        debugPrint(res!.statusMessage??"");
-        return ApiResponse.error(res!.statusMessage??"");
+        debugPrint(res!.statusMessage ?? "");
+        return ApiResponse.error(res!.statusMessage ?? "");
       }
       return ApiResponse.error(await _checkNetworkAndReturnError());
     }
@@ -50,6 +51,20 @@ class ApiService {
     } catch (e) {
       debugPrint(e.toString());
       return await _handleError(e);
+    }
+  }
+
+  Future<ApiResponse<MovieDetails>> getMoviesById(String id) async {
+    try {
+      final res = await tmdbClient.getMovieById(id);
+      return ApiResponse.success(MovieDetails.fromJson(res));
+    } catch (e) {
+      if ((e as DioError).type == DioErrorType.response) {
+        final res = e.response;
+        debugPrint(res!.statusMessage ?? "");
+        return ApiResponse.error(res!.statusMessage ?? "");
+      }
+      return ApiResponse.error(await _checkNetworkAndReturnError());
     }
   }
 
@@ -86,4 +101,7 @@ class ApiService {
     }
     return null;
   }
+
+  static String? getImageUrl(String? suffix) =>
+      (suffix != null) ? "https://image.tmdb.org/t/p/w500$suffix" : null;
 }

@@ -7,7 +7,12 @@ part 'tmdb_api_client.g.dart';
 abstract class TmdbApiClient {
   factory TmdbApiClient(Dio dio) = _TmdbApiClient;
   static const apiKey = "ffe7a60a6c4793a92f249a1fc679004a";
-  
-  @GET("/trending/movie/week?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US")
+
+  @GET(
+      "/trending/movie/week?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US")
   Future getTrendingMovies();
+
+  @GET(
+      "/movie/{movieId}?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US")
+  Future getMovieById(@Path("movieId") String id);
 }

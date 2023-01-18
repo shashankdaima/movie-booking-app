@@ -14,6 +14,7 @@
 import 'package:auto_route/auto_route.dart' as _i3;
 import 'package:flutter/material.dart' as _i4;
 
+import '../models/responses/movie.dart' as _i5;
 import '../ui/export_ui.dart' as _i1;
 import '../ui/main/main_page_host_screen.dart' as _i2;
 
@@ -39,6 +40,26 @@ class AppRouter extends _i3.RootStackRouter {
       return _i3.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.MainPageHostScreen(),
+      );
+    },
+    DetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsRouteArgs>();
+      return _i3.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i1.DetailsScreen(
+          key: args.key,
+          movie: args.movie,
+        ),
+      );
+    },
+    SeatSelectionRoute.name: (routeData) {
+      final args = routeData.argsAs<SeatSelectionRouteArgs>();
+      return _i3.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i1.SeatSelectionScreen(
+          movie: args.movie,
+          key: args.key,
+        ),
       );
     },
     HomeRoute.name: (routeData) {
@@ -81,6 +102,14 @@ class AppRouter extends _i3.RootStackRouter {
             ),
           ],
         ),
+        _i3.RouteConfig(
+          DetailsRoute.name,
+          path: '/details',
+        ),
+        _i3.RouteConfig(
+          SeatSelectionRoute.name,
+          path: '/seat-selection',
+        ),
       ];
 }
 
@@ -119,6 +148,74 @@ class MainRouter extends _i3.PageRouteInfo<void> {
         );
 
   static const String name = 'MainRouter';
+}
+
+/// generated route for
+/// [_i1.DetailsScreen]
+class DetailsRoute extends _i3.PageRouteInfo<DetailsRouteArgs> {
+  DetailsRoute({
+    _i4.Key? key,
+    required _i5.Movie movie,
+  }) : super(
+          DetailsRoute.name,
+          path: '/details',
+          args: DetailsRouteArgs(
+            key: key,
+            movie: movie,
+          ),
+        );
+
+  static const String name = 'DetailsRoute';
+}
+
+class DetailsRouteArgs {
+  const DetailsRouteArgs({
+    this.key,
+    required this.movie,
+  });
+
+  final _i4.Key? key;
+
+  final _i5.Movie movie;
+
+  @override
+  String toString() {
+    return 'DetailsRouteArgs{key: $key, movie: $movie}';
+  }
+}
+
+/// generated route for
+/// [_i1.SeatSelectionScreen]
+class SeatSelectionRoute extends _i3.PageRouteInfo<SeatSelectionRouteArgs> {
+  SeatSelectionRoute({
+    required _i5.Movie movie,
+    _i4.Key? key,
+  }) : super(
+          SeatSelectionRoute.name,
+          path: '/seat-selection',
+          args: SeatSelectionRouteArgs(
+            movie: movie,
+            key: key,
+          ),
+        );
+
+  static const String name = 'SeatSelectionRoute';
+}
+
+class SeatSelectionRouteArgs {
+  const SeatSelectionRouteArgs({
+    required this.movie,
+    this.key,
+  });
+
+  final _i5.Movie movie;
+
+  final _i4.Key? key;
+
+  @override
+  String toString() {
+    return 'SeatSelectionRouteArgs{movie: $movie, key: $key}';
+  }
 }
 
 /// generated route for
