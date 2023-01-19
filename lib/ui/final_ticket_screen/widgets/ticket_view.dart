@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:movie_booking_app/models/responses/reservation.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TicketView extends ConsumerWidget {
-  const TicketView({super.key});
+  const TicketView({required this.reservation, super.key});
+  final Reservation reservation;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
@@ -22,7 +24,8 @@ class TicketView extends ConsumerWidget {
                   children: [
                     SizedBox.square(
                         child: QrImage(
-                      data: 'This is a simple QR code',
+                      data:
+                          'https://www.moviebooking.com/tickets?pid=${reservation.movieSlotId}&hostEmail=${reservation.name}&seatId=${reservation.seatNo}',
                       version: QrVersions.auto,
                       gapless: false,
                     )),
@@ -33,15 +36,17 @@ class TicketView extends ConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("Shashank Shasnk ShashankShashank Daima",
+                          Text(reservation.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style:
                                   TextStyle(color: Colors.black, fontSize: 18)),
-                          Text("Seat no- s23",
+                          Text("Seat no- ${reservation.seatNo}",
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 14)),
-                          Text("1900 Fri 30/Feb/2023",
+                          Text(reservation.startingDate.toString(),
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 14)),
                         ],
