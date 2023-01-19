@@ -293,7 +293,8 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
     List<Reservation> reservations = [];
     for (String i in selectedSeats) {
       reservations.add(Reservation(
-          name: user.email.toString(),
+          name: user.userMetadata!["full_name"].toString(),
+          email: user.email.toString(),
           startingDate: date!,
           seatNo: i,
           movieSlotId: seatingPid.toString(),

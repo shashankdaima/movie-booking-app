@@ -25,7 +25,7 @@ class TicketView extends ConsumerWidget {
                     SizedBox.square(
                         child: QrImage(
                       data:
-                          'https://www.moviebooking.com/tickets?pid=${reservation.movieSlotId}&hostEmail=${reservation.name}&seatId=${reservation.seatNo}',
+                          'https://www.moviebooking.com/tickets?pid=${reservation.movieSlotId}&hostEmail=${reservation.email}&seatId=${reservation.seatNo}',
                       version: QrVersions.auto,
                       gapless: false,
                     )),
