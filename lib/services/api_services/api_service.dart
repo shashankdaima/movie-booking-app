@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_booking_app/models/responses/movie_details.dart';
+import 'package:movie_booking_app/models/responses/search_results.dart';
 import 'package:movie_booking_app/models/responses/trending_movies_response.dart';
 import 'package:movie_booking_app/services/api_services/supabase_api_client.dart';
 import 'package:movie_booking_app/services/api_services/tmdb_api_client.dart';
@@ -36,7 +37,7 @@ class ApiService {
     } catch (e) {
       if ((e as DioError).type == DioErrorType.response) {
         final res = e.response;
-        debugPrint(res!.statusMessage ?? "");
+        // debugPrint(res!.statusMessage ?? "");
         return ApiResponse.error(res!.statusMessage ?? "");
       }
       return ApiResponse.error(await _checkNetworkAndReturnError());
@@ -49,7 +50,7 @@ class ApiService {
       return ApiResponse.success(
           res.map((e) => ThumbnailResponse.fromJson(e)).toList());
     } catch (e) {
-      debugPrint(e.toString());
+      // debugPrint(e.toString());
       return await _handleError(e);
     }
   }
@@ -61,7 +62,7 @@ class ApiService {
     } catch (e) {
       if ((e as DioError).type == DioErrorType.response) {
         final res = e.response;
-        debugPrint(res!.statusMessage ?? "");
+        // debugPrint(res!.statusMessage ?? "");
         return ApiResponse.error(res!.statusMessage ?? "");
       }
       return ApiResponse.error(await _checkNetworkAndReturnError());
@@ -104,13 +105,27 @@ class ApiService {
 
   Future<ApiResponse<bool>> checkWhetherShowHasMovieSlots(String id) async {
     try {
-      final res = await supabaseApiClient.getCurrentShowsCount(id:"eq.$id");
+      final res = await supabaseApiClient.getCurrentShowsCount(id: "eq.$id");
       return ApiResponse.success((res as List).isNotEmpty);
     } catch (e) {
       if ((e as DioError).type == DioErrorType.response) {
         final res = e.response;
-        debugPrint(res!.statusMessage ?? "");
-        return ApiResponse.error(res.statusMessage ?? "");
+        // debugPrint(res!.statusMessage ?? "");
+        return ApiResponse.error(res!.statusMessage ?? "");
+      }
+      return ApiResponse.error(await _checkNetworkAndReturnError());
+    }
+  }
+
+  Future<ApiResponse<SearchResult>> searchShow(String query, int page) async {
+    try {
+      final res = await tmdbClient.getMovieByName(query, pageNo: page);
+      return ApiResponse.success(SearchResult.fromJson(res));
+    } catch (e) {
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.response) {
+        final res = e.response;
+        return ApiResponse.error(res!.data["status_message"].toString());
       }
       return ApiResponse.error(await _checkNetworkAndReturnError());
     }

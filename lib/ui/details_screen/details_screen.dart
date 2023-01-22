@@ -152,10 +152,8 @@ class _DetailsState extends ConsumerState<DetailsScreen> {
                 if (index == 1) {
                   return (status == DetailsScreenStatus.loading)
                       ? const Center(
-                          child: Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          ),
-                        )
+                        child: CircularProgressIndicator.adaptive(),
+                      )
                       : Column(
                           children: [
                             Row(

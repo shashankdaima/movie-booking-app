@@ -8,11 +8,16 @@ abstract class TmdbApiClient {
   factory TmdbApiClient(Dio dio) = _TmdbApiClient;
   static const apiKey = "ffe7a60a6c4793a92f249a1fc679004a";
 
-  @GET(
-      "/trending/movie/week?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US")
+  @GET("/trending/movie/week?api_key=${TmdbApiClient.apiKey}&language=en-US")
   Future getTrendingMovies();
 
-  @GET(
-      "/movie/{movieId}?api_key=ffe7a60a6c4793a92f249a1fc679004a&language=en-US")
+  @GET("/movie/{movieId}?api_key=${TmdbApiClient.apiKey}&language=en-US")
   Future getMovieById(@Path("movieId") String id);
+
+  @GET(
+      "/search/movie?api_key=${TmdbApiClient.apiKey}&language=en-US&include_adult=true")
+  Future getMovieByName(
+    @Query("query") String s, {
+    @Query("page") int pageNo = 1,
+  });
 }

@@ -33,20 +33,20 @@ class DetailsViewModel extends StateNotifier<DetailsViewModelState> {
     // debugPrint(response.toString());
     if (response.status != ApiStatus.success) {
       if (response.status == ApiStatus.authError) {
-        debugPrint("AUTH ERROR");
+        // debugPrint("AUTH ERROR");
         state = state.copyWith(
           status: DetailsScreenStatus.error,
           errorMessage: "User Not Authenticated",
         );
         return;
       }
-      debugPrint(response.toString());
+      // debugPrint(response.toString());
       state = state.copyWith(
         status: DetailsScreenStatus.error,
         errorMessage: response.errorMessage,
       );
     } else {
-      debugPrint(response.data.toString());
+      // debugPrint(response.data.toString());
       state = state.copyWith(
           status: DetailsScreenStatus.loaded, details: response.data);
       checkForAvailablity(movie);
