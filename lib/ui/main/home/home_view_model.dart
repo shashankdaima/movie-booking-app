@@ -4,10 +4,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 
-import '../../models/responses/movie.dart';
-import '../../models/responses/thumbnail_response.dart';
-import '../../services/api_services/api_service.dart';
-import '../../utils/api_response.dart';
+import '../../../models/responses/movie.dart';
+import '../../../models/responses/thumbnail_response.dart';
+import '../../../services/api_services/api_service.dart';
+
+
 part 'home_view_model.freezed.dart';
 
 final homeViewModelProvider =
