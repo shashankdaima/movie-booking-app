@@ -4,14 +4,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movie_booking_app/ui/main/search_view_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 import 'package:movie_booking_app/utils/no_overscroll_behaviour.dart';
-import '../../models/responses/search_results.dart';
-import '../../services/api_services/api_service.dart';
-import '../../utils/easy_debouncer.dart';
-import '../widgets/gradiant_button.dart';
+
+import '../../../models/responses/search_results.dart';
+import '../../../services/api_services/api_service.dart';
+import '../../../utils/easy_debouncer.dart';
+import '../../widgets/gradiant_button.dart';
+import 'search_view_model.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -149,7 +150,7 @@ class MovieOverview2 extends StatelessWidget {
                   "http://via.placeholder.com/350x150",
               placeholder: (context, url) =>
                   const Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) =>const Icon(Icons.error),
             ),
           ),
           const SizedBox(

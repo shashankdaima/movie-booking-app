@@ -10,11 +10,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_booking_app/core/router.gr.dart';
 import 'package:movie_booking_app/models/responses/movie.dart';
 import 'package:movie_booking_app/services/api_services/api_service.dart';
-import 'package:movie_booking_app/ui/main/home_view_model.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 import 'package:movie_booking_app/utils/no_overscroll_behaviour.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_slider_indicator/flutter_slider_indicator.dart';
+
+import 'home_view_model.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

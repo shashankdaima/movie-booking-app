@@ -1,3 +1,6 @@
+import 'package:floor/floor.dart';
+
+@Entity(primaryKeys: ["seatNo","movieId","startingDate"])
 class Reservation {
   final String name;
   final String email;
