@@ -19,7 +19,7 @@ class TicketView extends ConsumerWidget {
         child: Padding(
             padding: const EdgeInsets.only(top: 14.0, left: 14, bottom: 14),
             child: SizedBox(
-                height: 100,
+                height: 115,
                 child: Row(
                   children: [
                     SizedBox.square(
@@ -45,6 +45,11 @@ class TicketView extends ConsumerWidget {
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 14)),
                           Text(reservation.startingDate.toString(),
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 14)),
+                          Text("AVATAR:ways of water",
                               maxLines: 1,
                               textAlign: TextAlign.center,
                               style: TextStyle(

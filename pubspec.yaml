@@ -52,7 +52,9 @@ dependencies:
   realtime_client: ^1.0.2
   flutter_rating_bar: ^4.0.1
   qr_flutter: ^4.0.0
-  marquee: ^2.2.3
+  floor: ^1.4.1
+  floor_generator: ^1.4.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

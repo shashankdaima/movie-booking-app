@@ -35,6 +35,12 @@ class MainPageHostScreen extends StatelessWidget {
                       "Search For Your Show",
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                    ),
+                  if ((tabsRouter.activeIndex == 2))
+                    Text(
+                      "Previously Booked Tickets",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
                     )
                 ],
               ),
@@ -49,7 +55,7 @@ class MainPageHostScreen extends StatelessWidget {
               elevation: 0,
               centerTitle: true,
             )),
-        routes: const [HomeRoute(), SearchRoute()],
+        routes: const [HomeRoute(), SearchRoute(), HistoryRoute()],
         bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
               onTap: (index) {
                 tabsRouter.setActiveIndex(index);
@@ -62,6 +68,8 @@ class MainPageHostScreen extends StatelessWidget {
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.search), label: "Search"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.history), label: "History"),
               ],
             ));
   }
