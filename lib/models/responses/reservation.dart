@@ -1,11 +1,10 @@
 import 'package:floor/floor.dart';
 
-@entity
+@Entity(primaryKeys: ["seatNo","movieId","startingDate"])
 class Reservation {
   final String name;
   final String email;
   final DateTime startingDate;
-  @primaryKey
   final String seatNo;
   final String movieId;
   final String movieSlotId;

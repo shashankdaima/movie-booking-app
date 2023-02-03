@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Reservation` (`name` TEXT NOT NULL, `email` TEXT NOT NULL, `startingDate` TEXT NOT NULL, `seatNo` TEXT NOT NULL, `movieId` TEXT NOT NULL, `movieSlotId` TEXT NOT NULL, PRIMARY KEY (`seatNo`))');
+            'CREATE TABLE IF NOT EXISTS `Reservation` (`name` TEXT NOT NULL, `email` TEXT NOT NULL, `startingDate` TEXT NOT NULL, `seatNo` TEXT NOT NULL, `movieId` TEXT NOT NULL, `movieSlotId` TEXT NOT NULL, PRIMARY KEY (`startingDate`, `seatNo`, `movieId`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -120,7 +120,7 @@ class _$ReservationDao extends ReservationDao {
         _reservationDeletionAdapter = DeletionAdapter(
             database,
             'Reservation',
-            ['seatNo'],
+            ['startingDate', 'seatNo', 'movieId'],
             (Reservation item) => <String, Object?>{
                   'name': item.name,
                   'email': item.email,
