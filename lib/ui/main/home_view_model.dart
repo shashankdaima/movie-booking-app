@@ -23,7 +23,7 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
   }
   _loadHomeScreen() async {
     final thumbnailResponse = await _loadThumbnails();
-    debugPrint(thumbnailResponse.toString());
+    // debugPrint(thumbnailResponse.toString());
     final moviesResponse = await _loadMovies();
     if (thumbnailResponse && moviesResponse) {
       state = state.copyWith(carouselIndex: 0, status: HomeScreenStatus.loaded);
