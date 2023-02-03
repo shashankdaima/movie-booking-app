@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -7,9 +10,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
+import 'package:movie_booking_app/core/router.gr.dart';
+import 'package:movie_booking_app/models/responses/reservation.dart';
 import 'package:movie_booking_app/ui/seat_selection_screen/seat_selection_view_model.dart';
 
 import '../../models/responses/movie.dart';
+import '../../services/supabase/supabase_client.dart';
 import '../widgets/gradiant_button.dart';
 
 class SeatSelectionScreen extends ConsumerStatefulWidget {
@@ -21,7 +27,9 @@ class SeatSelectionScreen extends ConsumerStatefulWidget {
 }
 
 class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
-  DatePickerController _datePickerController = DatePickerController();
+  final DatePickerController _datePickerController = DatePickerController();
+  late int seatingPid;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -45,6 +53,20 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
     var now = DateTime.now();
     DateTime startDate = now.subtract(Duration(days: 0));
     DateTime endDate = now.add(Duration(days: 7));
+
+    //Silent Event Observation
+    ref.listen(
+        seatSelectionViewModelProvider.select(
+            (value) => [value.status, value.errorMessage]), (prev, next) {
+      if (next[0] == SeatSelectionScreenStatus.error) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(next[1].toString())));
+      }
+      if (next[0] == SeatSelectionScreenStatus.moveToNextScreen) {
+        moveToFinalTicketScreen();
+        // ref.read(seatSelectionViewModelProvider.notifier).clearSelectedScreen();
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -108,6 +130,7 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                                       .toString(),
                                   currentDate.toString())) {
                                 i = j;
+                                seatingPid = seatingArrangement[j]["pid"];
                                 break;
                               }
                             }
@@ -223,10 +246,12 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                           width: MediaQuery.of(context).size.width - 32,
                           borderRadius: BorderRadius.circular(12),
                           onPressed: () {
-                            // AutoRouter.of(context).push(SeatSelectionRoute());
-                            // ref
-                            //     .read(seatSelectionViewModelProvider.notifier)
-                            //     .makePayment(_datePickerController.selectedDate);
+                            // AutoRouter.of(context)
+                            //     .push(const FinalTicketRoute());
+                            ref
+                                .read(seatSelectionViewModelProvider.notifier)
+                                .makePayment(seatingPid);
+                            // debugPrint(seatingPid.toString());
                           },
                           child: Text(
                             "Book Tickets",
@@ -234,7 +259,7 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
                                 fontSize: 18, fontWeight: FontWeight.w600),
                           )),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     )
                   ],
@@ -256,6 +281,28 @@ class _SeatSelectionScreenState extends ConsumerState<SeatSelectionScreen> {
     int bDate = int.parse(b.substring(8, 10));
 
     return aYear == bYear && aMonth == bMonth && aDate == bDate;
+  }
+
+  moveToFinalTicketScreen() async {
+    // Future.delayed(const Duration(seconds: 5));
+    // debugPrint(_datePickerController.selectedDate.toString());
+    final user = (SupabaseClient.authSession())!.user;
+    var date = _datePickerController.selectedDate;
+    final selectedSeats = ref.watch(
+        seatSelectionViewModelProvider.select((value) => value.selectedSeats));
+    List<Reservation> reservations = [];
+    for (String i in selectedSeats) {
+      reservations.add(Reservation(
+          name: user.userMetadata!["full_name"].toString(),
+          email: user.email.toString(),
+          startingDate: date!,
+          seatNo: i,
+          movieSlotId: seatingPid.toString(),
+          movieId: widget.movie.id.toString()));
+    }
+
+    AutoRouter.of(context)
+        .replace(FinalTicketRoute(reservations: reservations));
   }
 }
 

@@ -91,12 +91,20 @@ class SeatSelectionViewModel
     return aYear == bYear && aMonth == bMonth && aDate == bDate;
   }
 
-  setSeattingArrangementIndex(int index) {
-    state = state.copyWith(seatingArrangementIndex: index);
+  void makePayment(int pid) async {
+    // debugPrint(state.seatingArrangementIndex.toString());
+    final res = await SupabaseClient.bookTicket(pid, state.selectedSeats);
+    // debugPrint(res.errorMessage.toString());
+    if (res.errorMessage != null) {
+      state = state.copyWith(
+          errorMessage: res.errorMessage,
+          status: SeatSelectionScreenStatus.error);
+    }
+    state = state.copyWith(status: SeatSelectionScreenStatus.moveToNextScreen);
   }
 
-  int? getSeatingArrangmentIndex() {
-    return state.seatingArrangementIndex;
+  clearSelectedScreen() {
+    state = state.copyWith(selectedSeats: []);
   }
 }
 
@@ -108,9 +116,8 @@ class SeatSelectionViewModelState with _$SeatSelectionViewModelState {
       String? errorMessage,
       dynamic? seatingArrangement,
       String? currentDate,
-      int? seatingArrangementIndex,
       @Default([])
           List<String> selectedSeats}) = _SeatSelectionViewModelState;
 }
 
-enum SeatSelectionScreenStatus { initial, loading, error, loaded }
+enum SeatSelectionScreenStatus { initial, loading, error, moveToNextScreen }

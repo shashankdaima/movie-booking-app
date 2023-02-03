@@ -15,6 +15,7 @@ import 'package:auto_route/auto_route.dart' as _i3;
 import 'package:flutter/material.dart' as _i4;
 
 import '../models/responses/movie.dart' as _i5;
+import '../models/responses/reservation.dart' as _i6;
 import '../ui/export_ui.dart' as _i1;
 import '../ui/main/main_page_host_screen.dart' as _i2;
 
@@ -58,6 +59,16 @@ class AppRouter extends _i3.RootStackRouter {
         routeData: routeData,
         child: _i1.SeatSelectionScreen(
           movie: args.movie,
+          key: args.key,
+        ),
+      );
+    },
+    FinalTicketRoute.name: (routeData) {
+      final args = routeData.argsAs<FinalTicketRouteArgs>();
+      return _i3.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i1.FinalTicketScreen(
+          reservations: args.reservations,
           key: args.key,
         ),
       );
@@ -109,6 +120,10 @@ class AppRouter extends _i3.RootStackRouter {
         _i3.RouteConfig(
           SeatSelectionRoute.name,
           path: '/seat-selection',
+        ),
+        _i3.RouteConfig(
+          FinalTicketRoute.name,
+          path: '/final-ticket-screen',
         ),
       ];
 }
@@ -215,6 +230,40 @@ class SeatSelectionRouteArgs {
   @override
   String toString() {
     return 'SeatSelectionRouteArgs{movie: $movie, key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i1.FinalTicketScreen]
+class FinalTicketRoute extends _i3.PageRouteInfo<FinalTicketRouteArgs> {
+  FinalTicketRoute({
+    required List<_i6.Reservation> reservations,
+    _i4.Key? key,
+  }) : super(
+          FinalTicketRoute.name,
+          path: '/final-ticket-screen',
+          args: FinalTicketRouteArgs(
+            reservations: reservations,
+            key: key,
+          ),
+        );
+
+  static const String name = 'FinalTicketRoute';
+}
+
+class FinalTicketRouteArgs {
+  const FinalTicketRouteArgs({
+    required this.reservations,
+    this.key,
+  });
+
+  final List<_i6.Reservation> reservations;
+
+  final _i4.Key? key;
+
+  @override
+  String toString() {
+    return 'FinalTicketRouteArgs{reservations: $reservations, key: $key}';
   }
 }
 

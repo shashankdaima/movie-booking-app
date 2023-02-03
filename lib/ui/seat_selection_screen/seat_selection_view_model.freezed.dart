@@ -20,7 +20,6 @@ mixin _$SeatSelectionViewModelState {
   String? get errorMessage => throw _privateConstructorUsedError;
   dynamic? get seatingArrangement => throw _privateConstructorUsedError;
   String? get currentDate => throw _privateConstructorUsedError;
-  int? get seatingArrangementIndex => throw _privateConstructorUsedError;
   List<String> get selectedSeats => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -41,7 +40,6 @@ abstract class $SeatSelectionViewModelStateCopyWith<$Res> {
       String? errorMessage,
       dynamic? seatingArrangement,
       String? currentDate,
-      int? seatingArrangementIndex,
       List<String> selectedSeats});
 }
 
@@ -63,7 +61,6 @@ class _$SeatSelectionViewModelStateCopyWithImpl<$Res,
     Object? errorMessage = freezed,
     Object? seatingArrangement = freezed,
     Object? currentDate = freezed,
-    Object? seatingArrangementIndex = freezed,
     Object? selectedSeats = null,
   }) {
     return _then(_value.copyWith(
@@ -83,10 +80,6 @@ class _$SeatSelectionViewModelStateCopyWithImpl<$Res,
           ? _value.currentDate
           : currentDate // ignore: cast_nullable_to_non_nullable
               as String?,
-      seatingArrangementIndex: freezed == seatingArrangementIndex
-          ? _value.seatingArrangementIndex
-          : seatingArrangementIndex // ignore: cast_nullable_to_non_nullable
-              as int?,
       selectedSeats: null == selectedSeats
           ? _value.selectedSeats
           : selectedSeats // ignore: cast_nullable_to_non_nullable
@@ -109,7 +102,6 @@ abstract class _$$_SeatSelectionViewModelStateCopyWith<$Res>
       String? errorMessage,
       dynamic? seatingArrangement,
       String? currentDate,
-      int? seatingArrangementIndex,
       List<String> selectedSeats});
 }
 
@@ -130,7 +122,6 @@ class __$$_SeatSelectionViewModelStateCopyWithImpl<$Res>
     Object? errorMessage = freezed,
     Object? seatingArrangement = freezed,
     Object? currentDate = freezed,
-    Object? seatingArrangementIndex = freezed,
     Object? selectedSeats = null,
   }) {
     return _then(_$_SeatSelectionViewModelState(
@@ -150,10 +141,6 @@ class __$$_SeatSelectionViewModelStateCopyWithImpl<$Res>
           ? _value.currentDate
           : currentDate // ignore: cast_nullable_to_non_nullable
               as String?,
-      seatingArrangementIndex: freezed == seatingArrangementIndex
-          ? _value.seatingArrangementIndex
-          : seatingArrangementIndex // ignore: cast_nullable_to_non_nullable
-              as int?,
       selectedSeats: null == selectedSeats
           ? _value._selectedSeats
           : selectedSeats // ignore: cast_nullable_to_non_nullable
@@ -170,7 +157,6 @@ class _$_SeatSelectionViewModelState implements _SeatSelectionViewModelState {
       this.errorMessage,
       this.seatingArrangement,
       this.currentDate,
-      this.seatingArrangementIndex,
       final List<String> selectedSeats = const []})
       : _selectedSeats = selectedSeats;
 
@@ -183,8 +169,6 @@ class _$_SeatSelectionViewModelState implements _SeatSelectionViewModelState {
   final dynamic? seatingArrangement;
   @override
   final String? currentDate;
-  @override
-  final int? seatingArrangementIndex;
   final List<String> _selectedSeats;
   @override
   @JsonKey()
@@ -196,7 +180,7 @@ class _$_SeatSelectionViewModelState implements _SeatSelectionViewModelState {
 
   @override
   String toString() {
-    return 'SeatSelectionViewModelState(status: $status, errorMessage: $errorMessage, seatingArrangement: $seatingArrangement, currentDate: $currentDate, seatingArrangementIndex: $seatingArrangementIndex, selectedSeats: $selectedSeats)';
+    return 'SeatSelectionViewModelState(status: $status, errorMessage: $errorMessage, seatingArrangement: $seatingArrangement, currentDate: $currentDate, selectedSeats: $selectedSeats)';
   }
 
   @override
@@ -211,9 +195,6 @@ class _$_SeatSelectionViewModelState implements _SeatSelectionViewModelState {
                 .equals(other.seatingArrangement, seatingArrangement) &&
             (identical(other.currentDate, currentDate) ||
                 other.currentDate == currentDate) &&
-            (identical(
-                    other.seatingArrangementIndex, seatingArrangementIndex) ||
-                other.seatingArrangementIndex == seatingArrangementIndex) &&
             const DeepCollectionEquality()
                 .equals(other._selectedSeats, _selectedSeats));
   }
@@ -225,7 +206,6 @@ class _$_SeatSelectionViewModelState implements _SeatSelectionViewModelState {
       errorMessage,
       const DeepCollectionEquality().hash(seatingArrangement),
       currentDate,
-      seatingArrangementIndex,
       const DeepCollectionEquality().hash(_selectedSeats));
 
   @JsonKey(ignore: true)
@@ -243,7 +223,6 @@ abstract class _SeatSelectionViewModelState
       final String? errorMessage,
       final dynamic? seatingArrangement,
       final String? currentDate,
-      final int? seatingArrangementIndex,
       final List<String> selectedSeats}) = _$_SeatSelectionViewModelState;
 
   @override
@@ -254,8 +233,6 @@ abstract class _SeatSelectionViewModelState
   dynamic? get seatingArrangement;
   @override
   String? get currentDate;
-  @override
-  int? get seatingArrangementIndex;
   @override
   List<String> get selectedSeats;
   @override
