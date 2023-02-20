@@ -77,7 +77,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
               );
             else {
-              return Container();
+              return const Center();
             }
           } else if (index == list.length + 4) {
             return (list.isNotEmpty &&
@@ -87,7 +87,8 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 : Container();
           } else {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
               child: MovieOverview2(
                 item: list[index - 4],
               ),
@@ -150,7 +151,7 @@ class MovieOverview2 extends StatelessWidget {
                   "http://via.placeholder.com/350x150",
               placeholder: (context, url) =>
                   const Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) =>const Icon(Icons.error),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
           const SizedBox(

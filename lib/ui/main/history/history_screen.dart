@@ -11,20 +11,29 @@ class HistoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final list = ref
         .watch(historyViewModelProvider.select((value) => value.reservation));
-    return ListView.builder(
-      itemBuilder: ((context, index) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TicketView(
-              reservation: Reservation(
-                  name: list[index].name,
-                  email: list[index].email,
-                  startingDate: list[index].startingDate,
-                  seatNo: list[index].seatNo,
-                  movieId: list[index].movieId,
-                  movieSlotId: list[index].movieSlotId),
+    return (list.isNotEmpty)
+        ? ListView.builder(
+            itemBuilder: ((context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TicketView(
+                    reservation: Reservation(
+                        name: list[index].name,
+                        email: list[index].email,
+                        startingDate: list[index].startingDate,
+                        seatNo: list[index].seatNo,
+                        movieId: list[index].movieId,
+                        movieSlotId: list[index].movieSlotId),
+                  ),
+                )),
+            itemCount: list.length,
+          )
+        : Center(
+            child: Column(
+              children: [
+                const Icon(Icons.history),
+                const Text("No History to show!")
+              ],
             ),
-          )),
-      itemCount: list.length,
-    );
+          );
   }
 }

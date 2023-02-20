@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -57,10 +58,9 @@ class HomeScreen extends ConsumerWidget {
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(i.thumbnail_url),
+                            image: CachedNetworkImageProvider(i.thumbnail_url),
                             fit: BoxFit.cover,
                           ),
-                          color: Colors.yellow,
                           borderRadius: BorderRadius.circular(15)),
                     );
                   },
@@ -85,20 +85,23 @@ class HomeScreen extends ConsumerWidget {
               child: Text("Currently Showing",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  for (int i = 0; i < state.movies.length; i++)
-                    MovieOverview(state.movies[i]),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                ],
+            SizedBox(
+              height: 300,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    for (int i = 0; i < state.movies.length; i++)
+                      MovieOverview(state.movies[i]),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                  ],
+                ),
               ),
             ),
             const Divider(),
@@ -145,11 +148,15 @@ class MovieOverview extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    "https://image.tmdb.org/t/p/w500" +
-                        movie.posterPath.toString(),
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        "https://image.tmdb.org/t/p/w500${movie.posterPath}",
                     height: 210,
                     width: 150,
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     fit: BoxFit.cover,
                   ),
                 ),
