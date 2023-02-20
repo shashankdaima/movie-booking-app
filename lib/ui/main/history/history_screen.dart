@@ -13,6 +13,7 @@ class HistoryScreen extends ConsumerWidget {
         .watch(historyViewModelProvider.select((value) => value.reservation));
     return (list.isNotEmpty)
         ? ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: ((context, index) => Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TicketView(
