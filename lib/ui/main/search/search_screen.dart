@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +9,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_booking_app/utils/api_response.dart';
 import 'package:movie_booking_app/utils/no_overscroll_behaviour.dart';
 
+import '../../../core/router.gr.dart';
+import '../../../models/responses/movie.dart';
 import '../../../models/responses/search_results.dart';
 import '../../../services/api_services/api_service.dart';
 import '../../../utils/easy_debouncer.dart';
@@ -155,7 +158,7 @@ class MovieOverview2 extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            width: 10,
+            width: 15,
           ),
           Expanded(
             child: Column(
@@ -170,8 +173,30 @@ class MovieOverview2 extends StatelessWidget {
                   height: 4,
                 ),
                 Text("4.5/5"),
+                const SizedBox(
+                  height: 4,
+                ),
                 GradiantButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    AutoRouter.of(context).push(DetailsRoute(
+                        movie: Movie(
+                      adult: item.adult,
+                      backdropPath: item.backdropPath,
+                      id: item.id,
+                      title: item.title,
+                      originalLanguage: item.originalLanguage,
+                      originalTitle: item.originalTitle,
+                      overview: item.overview,
+                      posterPath: item.posterPath,
+                      mediaType: "",
+                      genreIds: item.genreIds,
+                      popularity: item.popularity,
+                      releaseDate: item.releaseDate,
+                      video: item.video,
+                      voteAverage: item.voteAverage,
+                      voteCount: item.voteCount,
+                    )));
+                  },
                   height: 32,
                   borderRadius: BorderRadius.circular(10),
                   child: Text("Book This"),

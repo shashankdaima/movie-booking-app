@@ -54,6 +54,7 @@ dependencies:
   qr_flutter: ^4.0.0
   floor: ^1.4.1
   floor_generator: ^1.4.1
+  marquee: ^2.2.3
   
 dev_dependencies:
   flutter_test:
